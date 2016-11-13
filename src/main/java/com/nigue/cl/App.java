@@ -14,24 +14,21 @@ public class App {
         String fileToFiles = args[0];
         String newFolder = args[1];
 
-//        String fileToFiles = "C:\\Users\\ibanio\\Documents\\4_DigitosPdf\\puro\\mioc\\EnvioCartolas.java";
-//        String newFolder = "C:\\Users\\ibanio\\Documents\\4_DigitosPdf\\desc\\mioc";
+//        String fileToFiles = "C:\\Users\\anibal\\Documents\\PDF_Cartolas\\comparacion\\puro";
+//        String newFolder = "C:\\Users\\anibal\\Documents\\PDF_Cartolas\\comparacion\\desc";
+
         List<String> files = new ArrayList<String>();
 
         File file = new File(fileToFiles);
         if (file.isFile()) {
-            if (file.getAbsolutePath().contains(".class")) {
-                files.add(file.getAbsolutePath());
-            } else {
-                try {
-                    BufferedReader br = new BufferedReader(new FileReader(file));
-                    String sCurrentLine;
-                    while ((sCurrentLine = br.readLine()) != null) {
-                        files.add(sCurrentLine);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(file));
+                String sCurrentLine;
+                while ((sCurrentLine = br.readLine()) != null) {
+                    files.add(sCurrentLine);
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         } else {
             System.out.println(fileToFiles + " It's not a file");
@@ -43,12 +40,14 @@ public class App {
         if (folder.isDirectory()) {
             ProyconProcess p = new ProyconProcess(files, folder);
             p.execute();
-        } else if (!folder.exists()) {
-            if (folder.mkdirs()) {
-                ProyconProcess p = new ProyconProcess(files, folder);
-                p.execute();
-            } else {
-                System.out.println("Failed to create multiple directories!");
+        } else {
+            if (!folder.exists()) {
+                if (folder.mkdirs()) {
+                    ProyconProcess p = new ProyconProcess(files, folder);
+                    p.execute();
+                } else {
+                    System.out.println("Failed to create multiple directories!");
+                }
             }
         }
     }
